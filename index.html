@@ -1,136 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Digital Mystery Room</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
 </head>
+
 
 <body class="home-page">
 
+
     <div class="home-container">
 
-        <div class="detective-icon">🕵️</div>
 
-        <h1>DIGITAL MYSTERY ROOM</h1>
+        <!-- Detective Icon -->
+        <div class="detective-icon">
+            🕵️
+        </div>
 
+
+        <!-- Main Heading -->
+        <h1>
+            DIGITAL MYSTERY ROOM
+        </h1>
+
+
+        <!-- Description -->
         <p>
             Can you solve the mystery before time runs out?
         </p>
 
+
+        <!-- Buttons -->
         <div class="home-buttons">
 
-            <a href="how-to-play.html" class="btn">
+
+            <!-- How To Play -->
+            <a
+                href="how-to-play.html"
+                class="btn"
+            >
                 📖 How to Play
             </a>
 
-            <!-- START GAME -->
+
+            <!-- Start Mystery -->
             <button
                 onclick="startGame()"
-                class="btn start-btn">
+                class="btn start-btn"
+            >
                 ▶ Start Mystery
             </button>
 
-            <a href="leaderboard.html" class="btn">
+
+            <!-- Leaderboard -->
+            <a
+                href="leaderboard.html"
+                class="btn"
+            >
                 🏆 Leaderboard
             </a>
+
+
         </div>
 
+
+        <!-- Story -->
         <p class="story">
+
             🔒 You are trapped inside a mysterious laboratory.
+
             Find the clues, solve the puzzles and escape!
+
         </p>
+
 
     </div>
 
 
+
+    <!-- ================================= -->
     <!-- BACKEND CONNECTION -->
+    <!-- ================================= -->
+
     <script>
+
+
+        // Render backend URL
+        const API_URL =
+            "https://digital-mystery-room.onrender.com";
+
+
+
+        // =================================
+        // START GAME
+        // =================================
 
         async function startGame() {
 
+
             // Ask player name
-            let name = prompt("Enter your name:");
+            let name =
+                prompt("Enter your name:");
 
-            // Check name
-            if (!name || name.trim() === "") {
 
-                alert("Please enter your name!");
+
+            // Check player name
+            if (
+                !name ||
+                name.trim() === ""
+            ) {
+
+                alert(
+                    "Please enter your name!"
+                );
 
                 return;
+
             }
+
+
+
+            // Remove extra spaces
+            name =
+                name.trim();
+
 
 
             try {
 
-                // Send player name to Flask backend
-                const response = await fetch(
-                    "http://127.0.0.1:5000/api/player",
-                    {
-                        method: "POST",
 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            name: name.trim()
-                        })
-                    }
+                console.log(
+                    "🌐 Connecting to backend..."
                 );
 
 
+                console.log(
+                    "API:",
+                    `${API_URL}/api/player`
+                );
+
+
+
+                // Send player name
+                // to Render backend
+                const response =
+                    await fetch(
+
+                        `${API_URL}/api/player`,
+
+                        {
+
+                            method: "POST",
+
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+
+                            body:
+                                JSON.stringify({
+
+                                    name: name
+
+                                })
+
+                        }
+
+                    );
+
+
+
+                // Show response status
+                console.log(
+                    "📡 Response Status:",
+                    response.status
+                );
+
+
+
+                // Check server response
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Server returned ${response.status}`
+                    );
+
+                }
+
+
+
                 // Convert response to JSON
-                const data = await response.json();
+                const data =
+                    await response.json();
+
+
 
                 console.log(
-                    "Backend Response:",
+                    "📥 Backend Response:",
                     data
                 );
 
 
-                // If player created successfully
+
+                // =================================
+                // PLAYER CREATED
+                // =================================
+
                 if (data.success) {
 
-                    // Save player information
+
+                    console.log(
+                        "✅ Player created successfully!"
+                    );
+
+
+
+                    // Save player ID
                     localStorage.setItem(
                         "playerId",
                         data.player_id
                     );
 
+
+
+                    // Save player name
                     localStorage.setItem(
                         "playerName",
                         data.name
                     );
 
 
+
+                    console.log(
+                        "👤 Player ID:",
+                        data.player_id
+                    );
+
+
+
+                    console.log(
+                        "👤 Player Name:",
+                        data.name
+                    );
+
+
+
                     // Open game page
                     window.location.href =
                         "game.html";
 
-                } else {
-
-                    alert(data.message);
 
                 }
 
 
-            } catch (error) {
+                // =================================
+                // BACKEND ERROR
+                // =================================
 
-                console.error(error);
+                else {
+
+
+                    alert(
+
+                        data.message ||
+                        "Failed to create player."
+
+                    );
+
+                }
+
+
+            }
+
+
+
+            // =================================
+            // CONNECTION ERROR
+            // =================================
+
+            catch (error) {
+
+
+                console.error(
+                    "❌ Backend Connection Error:",
+                    error
+                );
+
+
 
                 alert(
-                    "Backend connection failed. Please start Flask server."
+
+                    "Backend connection failed.\n\n" +
+                    error.message
+
                 );
 
             }
 
         }
 
+
     </script>
 
+
 </body>
+
 </html>

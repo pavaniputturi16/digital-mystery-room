@@ -1,6 +1,5 @@
 const API_URL = "https://digital-mystery-room.onrender.com";
 
-
 /* =====================================================
    SOUND EFFECTS
 ===================================================== */
@@ -1722,33 +1721,39 @@ async function testBackend() {
    CREATE PLAYER
 ===================================================== */
 
-async function createPlayer(
-    name
-) {
+async function createPlayer(name) {
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/api/player`,
-                {
-                    method: "POST",
+        console.log("📤 Creating player:", name);
+        console.log("🌐 API URL:", API_URL);
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+        const response = await fetch(
+            `${API_URL}/api/player`,
+            {
+                method: "POST",
 
-                    body: JSON.stringify({
-                        name: name
-                    })
-                }
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name
+                })
+            }
+        );
+
+        console.log("📡 Response status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(
+                `Server returned ${response.status}`
             );
+        }
 
+        const data = await response.json();
 
-        const data =
-            await response.json();
-
+        console.log("📥 Backend response:", data);
 
         if (data.success) {
 
@@ -1757,31 +1762,36 @@ async function createPlayer(
                 data.player_id
             );
 
-
             localStorage.setItem(
                 "playerName",
                 data.name
             );
 
-
             console.log(
-                "Player created:",
+                "✅ Player created:",
                 data
             );
-
 
             return data;
         }
 
+        console.error(
+            "❌ Backend response did not contain success=true:",
+            data
+        );
 
     } catch (error) {
 
         console.error(
-            "Create Player Error:",
+            "❌ Create Player Error:",
             error
         );
-    }
 
+        alert(
+            "Backend connection failed.\n\n" +
+            error.message
+        );
+    }
 
     return null;
 }
