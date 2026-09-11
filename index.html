@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Mystery Room</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="home-page">
+
+    <div class="home-container">
+
+        <div class="detective-icon">🕵️</div>
+
+        <h1>DIGITAL MYSTERY ROOM</h1>
+
+        <p>
+            Can you solve the mystery before time runs out?
+        </p>
+
+        <div class="home-buttons">
+
+            <a href="how-to-play.html" class="btn">
+                📖 How to Play
+            </a>
+
+            <!-- START GAME -->
+            <button
+                onclick="startGame()"
+                class="btn start-btn">
+                ▶ Start Mystery
+            </button>
+
+            <a href="leaderboard.html" class="btn">
+                🏆 Leaderboard
+            </a>
+        </div>
+
+        <p class="story">
+            🔒 You are trapped inside a mysterious laboratory.
+            Find the clues, solve the puzzles and escape!
+        </p>
+
+    </div>
+
+
+    <!-- BACKEND CONNECTION -->
+    <script>
+
+        async function startGame() {
+
+            // Ask player name
+            let name = prompt("Enter your name:");
+
+            // Check name
+            if (!name || name.trim() === "") {
+
+                alert("Please enter your name!");
+
+                return;
+            }
+
+
+            try {
+
+                // Send player name to Flask backend
+                const response = await fetch(
+                    "http://127.0.0.1:5000/api/player",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            name: name.trim()
+                        })
+                    }
+                );
+
+
+                // Convert response to JSON
+                const data = await response.json();
+
+                console.log(
+                    "Backend Response:",
+                    data
+                );
+
+
+                // If player created successfully
+                if (data.success) {
+
+                    // Save player information
+                    localStorage.setItem(
+                        "playerId",
+                        data.player_id
+                    );
+
+                    localStorage.setItem(
+                        "playerName",
+                        data.name
+                    );
+
+
+                    // Open game page
+                    window.location.href =
+                        "game.html";
+
+                } else {
+
+                    alert(data.message);
+
+                }
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Backend connection failed. Please start Flask server."
+                );
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

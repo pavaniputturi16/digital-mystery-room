@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Escape Successful</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #3b0000,
+                    #120000 45%,
+                    #050505 100%
+                );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+
+            padding: 45px 30px;
+
+            text-align: center;
+
+            background: rgba(20, 0, 0, 0.9);
+
+            border: 1px solid #8b0000;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 0 30px rgba(255, 0, 0, 0.25);
+
+            animation: appear 0.8s ease;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        .icon {
+            font-size: 75px;
+
+            margin-bottom: 15px;
+
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+
+            from {
+                filter: drop-shadow(
+                    0 0 5px red
+                );
+            }
+
+            to {
+                filter: drop-shadow(
+                    0 0 25px red
+                );
+            }
+
+        }
+
+        h1 {
+            color: #ff3333;
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #ddd;
+
+            font-size: 18px;
+
+            margin-bottom: 35px;
+        }
+
+        .player {
+            font-size: 22px;
+
+            margin-bottom: 30px;
+
+            color: #ffb3b3;
+        }
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 35px;
+        }
+
+        .card {
+            padding: 22px 10px;
+
+            background: #160000;
+
+            border: 1px solid #550000;
+
+            border-radius: 15px;
+        }
+
+        .card .emoji {
+            font-size: 30px;
+
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 25px;
+
+            color: #ff4444;
+
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            color: #aaa;
+
+            font-size: 13px;
+        }
+
+        .message {
+            padding: 20px;
+
+            background: rgba(
+                100,
+                0,
+                0,
+                0.2
+            );
+
+            border-radius: 15px;
+
+            margin-bottom: 30px;
+
+            color: #ddd;
+
+            line-height: 1.6;
+        }
+
+        .buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            color: white;
+
+            background: #8b0000;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #c00000;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 15px
+                rgba(255, 0, 0, 0.4);
+        }
+
+        .secondary {
+            background: #222;
+        }
+
+        .secondary:hover {
+            background: #333;
+        }
+
+        @media (max-width: 650px) {
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="icon">
+            🎉
+        </div>
+
+
+        <h1>
+            YOU ESCAPED!
+        </h1>
+
+
+        <p class="subtitle">
+            🔓 THE LABORATORY HAS BEEN UNLOCKED
+        </p>
+
+
+        <div class="player">
+            Detective:
+            <strong id="playerName">
+                Guest
+            </strong>
+        </div>
+
+
+        <div class="stats">
+
+            <div class="card">
+
+                <div class="emoji">
+                    🏆
+                </div>
+
+                <h3 id="score">
+                    0
+                </h3>
+
+                <p>
+                    SCORE
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="emoji">
+                    🧩
+                </div>
+
+                <h3 id="puzzlesSolved">
+                    0/3
+                </h3>
+
+                <p>
+                    PUZZLES
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="emoji">
+                    ❌
+                </div>
+
+                <h3 id="wrongAttempts">
+                    0
+                </h3>
+
+                <p>
+                    WRONG ATTEMPTS
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="emoji">
+                    ⏱️
+                </div>
+
+                <h3 id="timeRemaining">
+                    00:00
+                </h3>
+
+                <p>
+                    TIME LEFT
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="message">
+
+            <strong>
+                🕵️ Congratulations Detective!
+            </strong>
+
+            <br>
+
+            You successfully solved all the
+            mysteries and escaped the
+            <strong>Locked Laboratory</strong>.
+
+            <br><br>
+
+            Your investigation is complete.
+            🔥
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button onclick="playAgain()">
+                🔄 PLAY AGAIN
+            </button>
+
+            <button
+                class="secondary"
+                onclick="goHome()">
+
+                🏠 HOME
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* ==========================================
+           LOAD RESULT DATA
+        ========================================== */
+
+        const playerName =
+            localStorage.getItem(
+                "playerName"
+            ) || "Guest";
+
+
+        const score =
+            localStorage.getItem(
+                "score"
+            ) || "0";
+
+
+        const puzzlesSolved =
+            localStorage.getItem(
+                "puzzlesSolved"
+            ) || "0";
+
+
+        const wrongAttempts =
+            localStorage.getItem(
+                "wrongAttempts"
+            ) || "0";
+
+
+        const timeRemaining =
+            localStorage.getItem(
+                "finalTimeRemaining"
+            ) ||
+            localStorage.getItem(
+                "timeRemaining"
+            ) ||
+            "0";
+
+
+        /* ==========================================
+           DISPLAY DATA
+        ========================================== */
+
+        document.getElementById(
+            "playerName"
+        ).innerText = playerName;
+
+
+        document.getElementById(
+            "score"
+        ).innerText = score;
+
+
+        document.getElementById(
+            "puzzlesSolved"
+        ).innerText =
+            puzzlesSolved + "/3";
+
+
+        document.getElementById(
+            "wrongAttempts"
+        ).innerText = wrongAttempts;
+
+
+        /* ==========================================
+           FORMAT TIME
+        ========================================== */
+
+        const seconds =
+            parseInt(timeRemaining) || 0;
+
+
+        const minutes =
+            Math.floor(seconds / 60);
+
+
+        const remainingSeconds =
+            seconds % 60;
+
+
+        document.getElementById(
+            "timeRemaining"
+        ).innerText =
+
+            String(minutes).padStart(2, "0")
+            + ":" +
+            String(
+                remainingSeconds
+            ).padStart(2, "0");
+
+
+        /* ==========================================
+           PLAY AGAIN
+        ========================================== */
+
+        function playAgain() {
+
+    localStorage.removeItem("puzzlesSolved");
+    localStorage.removeItem("wrongAttempts");
+    localStorage.removeItem("timeRemaining");
+    localStorage.removeItem("finalTimeRemaining");
+    localStorage.removeItem("score");
+    localStorage.removeItem("gameCompleted");
+
+    // New game ki 3 hints
+    localStorage.setItem("hintsRemaining", "3");
+
+    window.location.href = "game.html";
+}
+        /* ==========================================
+           HOME
+        ========================================== */
+
+        function goHome() {
+
+            window.location.href =
+                "index.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

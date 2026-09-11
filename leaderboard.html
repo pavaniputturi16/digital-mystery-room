@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Leaderboard - Digital Mystery Room</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        .leaderboard-box {
+            width: 100%;
+            max-width: 800px;
+            margin: 25px auto;
+        }
+
+        .leaderboard-header,
+        .player-row {
+            display: grid;
+            grid-template-columns:
+                70px 1fr 100px 100px 100px;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .leaderboard-header {
+            background: #7f1d1d;
+            color: white;
+            font-weight: bold;
+        }
+
+        .player-row {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .rank {
+            font-size: 22px;
+            text-align: center;
+        }
+
+        .score {
+            font-weight: bold;
+        }
+
+        .empty-message {
+            padding: 25px;
+        }
+
+        @media (max-width: 650px) {
+
+            .leaderboard-header,
+            .player-row {
+                grid-template-columns:
+                    50px 1fr 80px;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body class="home-page">
+
+    <div class="home-container">
+
+        <div class="detective-icon">
+            🏆
+        </div>
+
+        <h1>
+            LEADERBOARD
+        </h1>
+
+        <p>
+            🕵️ Top Master Detectives
+        </p>
+
+
+        <div class="leaderboard-box">
+
+            <div class="leaderboard-header">
+
+                <div>Rank</div>
+
+                <div>Player</div>
+
+                <div>Score</div>
+
+                <div class="hide-mobile">
+                    Puzzles
+                </div>
+
+                <div class="hide-mobile">
+                    Hints
+                </div>
+
+            </div>
+
+
+            <div id="leaderboard">
+
+                <p class="empty-message">
+                    ⏳ Loading leaderboard...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a href="index.html"
+           class="btn">
+
+            🏠 Home
+
+        </a>
+
+    </div>
+
+
+    <script>
+
+        const API_URL =
+            "http://127.0.0.1:5000";
+
+
+        async function loadLeaderboard() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/leaderboard`
+                    );
+
+                const data =
+                    await response.json();
+
+
+                const leaderboard =
+                    document.getElementById(
+                        "leaderboard"
+                    );
+
+
+                if (
+                    !data.success ||
+                    data.leaderboard.length === 0
+                ) {
+
+                    leaderboard.innerHTML = `
+                        <p class="empty-message">
+                            🏆 No completed games yet.
+                        </p>
+                    `;
+
+                    return;
+                }
+
+
+                leaderboard.innerHTML = "";
+
+
+                data.leaderboard.forEach(
+                    (player, index) => {
+
+                        let medal = "";
+
+                        if (index === 0) {
+                            medal = "🥇";
+                        } 
+                        else if (index === 1) {
+                            medal = "🥈";
+                        } 
+                        else if (index === 2) {
+                            medal = "🥉";
+                        } 
+                        else {
+                            medal = index + 1;
+                        }
+
+
+                        const row =
+                            document.createElement("div");
+
+
+                        row.className =
+                            "player-row";
+
+
+                        row.innerHTML = `
+
+                            <div class="rank">
+                                ${medal}
+                            </div>
+
+                            <div>
+                                👤 ${player.name}
+                            </div>
+
+                            <div class="score">
+                                🏆 ${player.score}
+                            </div>
+
+                            <div class="hide-mobile">
+                                🧩 ${player.puzzles_solved}
+                            </div>
+
+                            <div class="hide-mobile">
+                                💡 ${player.hints_used}
+                            </div>
+
+                        `;
+
+
+                        leaderboard.appendChild(row);
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Leaderboard Error:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "leaderboard"
+                ).innerHTML = `
+
+                    <p class="empty-message">
+                        ⚠️ Could not connect to backend.
+                    </p>
+
+                `;
+
+            }
+
+        }
+
+
+        loadLeaderboard();
+
+    </script>
+
+</body>
+
+</html>

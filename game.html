@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Locked Laboratory</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- =========================================
+         PLAYER INFO
+    ========================================== -->
+
+    <div id="player-info">
+        👤 Player:
+        <span id="player-name">Loading...</span>
+    </div>
+
+
+    <!-- =========================================
+         TOP BAR
+    ========================================== -->
+
+    <header class="game-header">
+
+        <h2>🧪 THE LOCKED LABORATORY</h2>
+
+        <div class="game-info">
+
+            <span id="timer">
+                ⏱️ 15:00
+            </span>
+
+            <span id="clue-count">
+                🔎 Clues: 0/3
+            </span>
+
+            <span id="hint-count">
+                💡 Hints: 3
+            </span>
+
+
+            <!-- HINT BUTTON -->
+
+            <button
+                class="hint-button"
+                onclick="useHint()">
+
+                💡 HINT
+
+            </button>
+
+
+            <!-- SOUND BUTTON -->
+
+            <button
+                id="sound-toggle"
+                class="hint-button"
+                onclick="toggleSound()">
+
+                🔊 SOUND ON
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MYSTERY ROOM
+    ========================================== -->
+
+    <main class="room">
+
+
+        <!-- CLOCK -->
+
+        <button
+            class="object clock"
+            onclick="inspectClock()">
+
+            🕰️
+
+            <span>
+                Clock
+            </span>
+
+        </button>
+
+
+        <!-- PAINTING -->
+
+        <button
+            class="object painting"
+            onclick="inspectPainting()">
+
+            🖼️
+
+            <span>
+                Painting
+            </span>
+
+        </button>
+
+
+        <!-- BOOKS -->
+
+        <button
+            class="object books"
+            onclick="inspectBooks()">
+
+            📚
+
+            <span>
+                Books
+            </span>
+
+        </button>
+
+
+        <!-- COMPUTER -->
+
+        <button
+            class="object computer"
+            onclick="openComputer()">
+
+            💻
+
+            <span>
+                Computer
+            </span>
+
+        </button>
+
+
+        <!-- LOCKED DRAWER -->
+
+        <button
+            class="object drawer"
+            onclick="openDrawer()">
+
+            🔐
+
+            <span>
+                Locked Drawer
+            </span>
+
+        </button>
+
+
+        <!-- EXIT DOOR -->
+
+        <button
+            class="object exit"
+            onclick="tryExit()">
+
+            🚪
+
+            <span>
+                Exit Door
+            </span>
+
+        </button>
+
+    </main>
+
+
+    <!-- =========================================
+         POPUP / MODAL
+    ========================================== -->
+
+    <div
+        id="modal"
+        class="modal">
+
+        <div class="modal-content">
+
+
+            <!-- CLOSE BUTTON -->
+
+            <span
+                class="close"
+                onclick="closeModal()">
+
+                ×
+
+            </span>
+
+
+            <!-- TITLE -->
+
+            <h2 id="modal-title">
+                Mystery
+            </h2>
+
+
+            <!-- MESSAGE -->
+
+            <div id="modal-text">
+                Clue
+            </div>
+
+
+            <!-- INPUT AREA -->
+
+            <div
+                id="modal-input-container"
+                style="display: none;">
+
+                <input
+                    id="modal-input"
+                    type="text"
+                    placeholder="Enter your answer"
+                    autocomplete="off"
+                >
+
+                <button
+                    id="modal-submit"
+                    class="hint-button"
+                    type="button">
+
+                    🔓 SUBMIT
+
+                </button>
+
+
+                <!-- =================================
+                     COMPUTER SMALL CLUE
+                ================================== -->
+
+                <div
+                    id="computer-clue"
+                    class="computer-clue"
+                    style="display: none;">
+
+                    🔎 <strong>Small Clue:</strong>
+
+                    <span>
+                        The password is related to the
+                        laboratory's secret protocol.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/puzzles.js"></script>
+
+    <script src="js/timer.js"></script>
+
+    <script src="js/game.js"></script>
+
+
+    <!-- =========================================
+         PLAYER DATA
+    ========================================== -->
+
+    <script>
+
+        const storedPlayerName =
+            localStorage.getItem("playerName");
+
+        const storedPlayerId =
+            localStorage.getItem("playerId");
+
+
+        const playerElement =
+            document.getElementById("player-name");
+
+
+        if (playerElement) {
+
+            playerElement.innerText =
+                storedPlayerName || "Guest";
+
+        }
+
+
+        console.log(
+            "Player ID:",
+            storedPlayerId
+        );
+
+
+        console.log(
+            "Player Name:",
+            storedPlayerName
+        );
+
+    </script>
+
+
+</body>
+
+</html>
