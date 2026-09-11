@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from database import (
-    get_connection,
-    initialize_database
-)
+app = Flask(__name__)
 
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://digital-mystery-room.vercel.app"
+        ]
+    }
+})
 
 # =====================================
 # CREATE FLASK APP
