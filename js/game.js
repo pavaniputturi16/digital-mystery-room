@@ -949,18 +949,14 @@ function openComputer() {
     playSound("click");
 
 
+    // Already solved
     if (solvedPuzzles.computer) {
 
         showModal(
-
             "💻 Computer",
-
             `
-            <p>
-                The computer is already unlocked.
-            </p>
+            <p>The computer is already unlocked.</p>
             `,
-
             false
         );
 
@@ -968,8 +964,8 @@ function openComputer() {
     }
 
 
+    // Show password screen
     showModal(
-
         "💻 Laboratory Computer",
 
         `
@@ -989,36 +985,112 @@ function openComputer() {
     );
 
 
-    /* =============================================
-       SHOW FREE COMPUTER CLUE
-       User does NOT need to use hints
-    ============================================= */
-
+    // Dynamic clue
     setTimeout(() => {
 
         const computerClue =
-            document.getElementById(
-                "computer-clue"
-            );
+            document.getElementById("computer-clue");
 
-        if (computerClue) {
 
-            computerClue.innerHTML = `
-                🔎 <strong>Small Clue:</strong>
-                <span>
-                    The password is related to
-                    the laboratory's secret protocol.
-                </span>
-            `;
-
-            computerClue.style.display =
-                "block";
+        if (!computerClue) {
+            return;
         }
+
+
+        let clueText =
+            "The password is hidden somewhere in the laboratory.";
+
+
+        // Check random password
+        switch (
+            puzzleData.computerPassword.toLowerCase()
+        ) {
+
+
+            case "laboratory":
+
+                clueText =
+                    "Think about the place where experiments and research happen.";
+
+                break;
+
+
+            case "quantum":
+
+                clueText =
+                    "Think about the mysterious world of particles and physics.";
+
+                break;
+
+
+            case "phantom":
+
+                clueText =
+                    "Think of a mysterious spirit-like figure.";
+
+                break;
+
+
+            case "research":
+
+                clueText =
+                    "Think about the process of discovering new knowledge.";
+
+                break;
+
+
+            case "experiment":
+
+                clueText =
+                    "Think about a scientific test performed to discover something.";
+
+                break;
+
+
+            case "mystery":
+
+                clueText =
+                    "Think about something unknown that needs to be solved.";
+
+                break;
+
+
+            case "scientist":
+
+                clueText =
+                    "Think about the person who performs experiments and discovers new things.";
+
+                break;
+
+
+            case "protocol":
+
+                clueText =
+                    "Think about a set of rules or procedures followed in a laboratory.";
+
+                break;
+
+        }
+
+
+        // Display dynamic clue
+        computerClue.innerHTML = `
+            🔎 <strong>Small Clue:</strong>
+            <span>
+                ${clueText}
+            </span>
+        `;
+
+
+        computerClue.style.display =
+            "block";
+
 
     }, 100);
 
 
     addClue();
+
 }
 
 
